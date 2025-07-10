@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model ContactForm {
+  id               String      @id @default(uuid())
+  nombre           String
+  apellido         String
+  pais             String
+  ciudad           String
+  empresa          String
+  cargo            String
+  email            String
+  telefono         String
+  mensaje          String
+  recibirNoticias  Boolean
+  createdAt        DateTime @default(now())
+}

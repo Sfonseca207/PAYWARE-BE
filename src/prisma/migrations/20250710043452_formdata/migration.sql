@@ -1,0 +1,33 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+-- CreateTable
+CREATE TABLE [dbo].[ContactForm] (
+    [id] NVARCHAR(1000) NOT NULL,
+    [nombre] NVARCHAR(1000) NOT NULL,
+    [apellido] NVARCHAR(1000) NOT NULL,
+    [pais] NVARCHAR(1000) NOT NULL,
+    [ciudad] NVARCHAR(1000) NOT NULL,
+    [empresa] NVARCHAR(1000) NOT NULL,
+    [cargo] NVARCHAR(1000) NOT NULL,
+    [email] NVARCHAR(1000) NOT NULL,
+    [telefono] NVARCHAR(1000) NOT NULL,
+    [mensaje] NVARCHAR(1000) NOT NULL,
+    [recibirNoticias] BIT NOT NULL,
+    [createdAt] DATETIME2 NOT NULL CONSTRAINT [ContactForm_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT [ContactForm_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+
+COMMIT TRAN;
+
+END TRY
+BEGIN CATCH
+
+IF @@TRANCOUNT > 0
+BEGIN
+    ROLLBACK TRAN;
+END;
+THROW
+
+END CATCH
