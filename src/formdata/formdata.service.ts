@@ -25,8 +25,6 @@ export class FormdataService {
 - *Apellido:* ${formData.apellido}
 - *Correo:* ${formData.email}
 - *Teléfono:* ${formData.telefono}
-
-🏢 *Datos Laborales*
 - *Empresa:* ${formData.empresa}
 - *Cargo:* ${formData.cargo}
 
