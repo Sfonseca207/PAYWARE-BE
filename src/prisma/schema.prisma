@@ -18,7 +18,7 @@ model ContactForm {
   cargo            String
   email            String
   telefono         String
-  mensaje          String
+  mensaje          String?
   recibirNoticias  Boolean
   createdAt        DateTime @default(now())
 }

@@ -29,7 +29,7 @@ export class FormData {
     telefono: string;
 
     @ApiProperty()
-    mensaje: string;
+    mensaje?: string | null;
 
     @ApiProperty()
     recibirNoticias: boolean;

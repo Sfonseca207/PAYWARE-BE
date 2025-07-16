@@ -7,14 +7,22 @@ export class MailerService {
 
   constructor(private readonly mailerService: NestMailerService) {}
 
-  async sendContactoForm(to: string | string[], formData: any): Promise<void> {
+  async sendContactoForm(to: string | string[], formData: any, securityInfo?: { clientIp?: string; spamSuspicion?: { isSuspicious: boolean; reasons: string[] } }): Promise<void> {
     try {
+      const spamAlert = securityInfo?.spamSuspicion?.isSuspicious ? '⚠️ [Sospechoso de Spam]' : '';
+      const securitySection = securityInfo ? `
+        <br><span style="font-size:1.2em;">🔒</span> <b>Información de Seguridad</b><br>
+        <b>IP de origen:</b> ${securityInfo.clientIp || 'Desconocida'}<br>
+        <b>Fecha y hora:</b> ${new Date().toLocaleString('es-ES')}<br>
+        ${securityInfo.spamSuspicion?.isSuspicious ? `<b style="color: #ff6b35;">⚠️ Alertas de seguridad:</b> ${securityInfo.spamSuspicion.reasons.join(', ')}<br>` : ''}
+      ` : '';
+
       await this.mailerService.sendMail({
         to,
-        subject: '📥 Nuevo Formulario de Contacto',
+        subject: `📥 Nuevo Formulario de Contacto ${spamAlert}`,
         html: `
           <div style="font-family: Arial, sans-serif; font-size:15px;">
-            <span style="font-size:1.5em;">📥</span> <b>Nuevo Formulario de Contacto</b> <br><br>
+            <span style="font-size:1.5em;">📥</span> <b>Nuevo Formulario de Contacto</b> ${spamAlert}<br><br>
             
             <span style="font-size:1.2em;">👤</span> <b>Datos del Contacto</b><br>
             <b>Nombre:</b> ${formData.nombre}<br>
@@ -32,6 +40,7 @@ export class MailerService {
             <i>"${formData.mensaje || 'No incluyó mensaje.'}"</i><br><br>
             
             <span style="font-size:1.2em;">📰</span> <b>¿Solicita recibir noticias?</b> ${formData.recibirNoticias ? 'Sí' : 'No'}
+            ${securitySection}
           </div>
         `,
       });
