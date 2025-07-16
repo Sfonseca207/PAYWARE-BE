@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FormdataModule } from './formdata/formdata.module';
 import { TwilioModule } from './twilio/twilio.module';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { TwilioModule } from './twilio/twilio.module';
     }),
     FormdataModule,
     TwilioModule,
+    MailerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

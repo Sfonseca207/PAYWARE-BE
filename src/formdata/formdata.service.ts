@@ -3,10 +3,11 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { FormDataDTO } from './dto/formdata.dto';
 import { FormData } from './entities/formdata.entity';
 import { TwilioService } from 'src/twilio/twilio.service';
+import { MailerService } from 'src/mailer/mailer.service';
 
 @Injectable()
 export class FormdataService {
-  constructor(private readonly prismaService: PrismaService, private readonly twilioService: TwilioService){}
+  constructor(private readonly prismaService: PrismaService, private readonly twilioService: TwilioService, private readonly mailerService: MailerService){}
 
 
   async createformdata(formData: FormDataDTO) {
@@ -38,8 +39,18 @@ export class FormdataService {
 📰 *¿Solicita recibir noticias?* ${formData.recibirNoticias ? 'Sí' : 'No'}
     `.trim();
 
+        const notificationEmail = process.env.NOTIFICATION_EMAIL
+
+        if (!notificationEmail) {
+          throw new Error('NOTIFICATION_EMAIL is not defined in the environment variables');
+        }
+
+        const recipients = notificationEmail.split(',').map(e => e.trim());
+
+        await this.mailerService.sendContactoForm(recipients, formData);
 
         await this.twilioService.sendWhatsAppMessage(messageBody)
+
 
     
 
