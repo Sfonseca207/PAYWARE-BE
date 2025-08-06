@@ -105,7 +105,7 @@ ${isSpamSuspicion.isSuspicious ? `- *⚠️ Alertas:* ${isSpamSuspicion.reasons.
       };
 
       await this.mailerService.sendContactoForm(recipients, enhancedFormData, securityInfo);
-      await this.twilioService.sendWhatsAppMessage(messageBody)
+      // await this.twilioService.sendWhatsAppMessage(messageBody)
 
       return newFormData;
       
